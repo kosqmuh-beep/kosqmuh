@@ -297,7 +297,7 @@ function renderVerseList(vrefs, selected) {
 if (!txt) continue;
 if (!matchesText(txt.toLowerCase(), include, exclude)) continue;
 
-const highlighted = highlightText(escapeHtml(txt), ['children']);
+const highlighted = highlightText(txt, include);
 
 parts.push(`
   <div class="tblock">
@@ -315,12 +315,14 @@ parts.push(`
   elResults.innerHTML = parts.join('');
 }
 function highlightText(text, includeWords) {
-  let result = text;
+  let safeText = escapeHtml(text);
+
   includeWords.forEach(word => {
     const regex = new RegExp(`(${word})`, 'gi');
-    result = result.replace(regex, '<mark>$1</mark>');
+    safeText = safeText.replace(regex, '<mark>$1</mark>');
   });
-  return result;
+
+  return safeText;
 }
 function renderCriteria(include, exclude, selected) {
   const vrefs = vrefsMatchingCriteria(include, exclude, selected);
