@@ -293,15 +293,35 @@ function renderVerseList(vrefs, selected) {
     for (const name of selected) {
       const map = translations.get(name);
       if (!map) continue;
-      const txt = map.get(vref);
-      if (!txt) continue;
-      parts.push(`<div class="tblock"><div class="tname">${escapeHtml(name)}:</div><div class="ttext">${escapeHtml(txt)}</div></div>`);
+     const txt = map.get(vref);
+if (!txt) continue;
+if (!matchesText(txt.toLowerCase(), include, exclude)) continue;
+
+const highlighted = highlightText(escapeHtml(txt), include);
+
+parts.push(`
+  <div class="tblock">
+    <div class="tname">${escapeHtml(name)}</div>
+    <div class="ttext">${highlighted}</div>
+    <div class="actions">
+      <button type="button" onclick="copyVerseText('${vref}', selectedTranslatorNames())">Copy</button>
+      <button type="button" onclick="shareVerseText('${vref}', selectedTranslatorNames())">Share</button>
+    </div>
+  </div>
+`);
     }
     parts.push(`</div><hr/>`);
   }
   elResults.innerHTML = parts.join('');
 }
-
+function highlightText(text, includeWords) {
+  let result = text;
+  includeWords.forEach(word => {
+    const regex = new RegExp(`(${word})`, 'gi');
+    result = result.replace(regex, '<mark>$1</mark>');
+  });
+  return result;
+}
 function renderCriteria(include, exclude, selected) {
   const vrefs = vrefsMatchingCriteria(include, exclude, selected);
   if (vrefs.length === 0) {
