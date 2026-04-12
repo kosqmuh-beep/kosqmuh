@@ -302,7 +302,7 @@ const highlighted = highlightText(txt, ['children']);
 parts.push(`
   <div class="tblock">
     <div class="tname">${escapeHtml(name)}</div>
-    <div class="ttext">${highlighted}</div>
+    <div class="ttext">TEST-${highlighted}-TEST</div>
     <div class="actions">
       <button type="button" onclick="copyVerseText('${vref}', selectedTranslatorNames())">Copy</button>
       <button type="button" onclick="shareVerseText('${vref}', selectedTranslatorNames())">Share</button>
