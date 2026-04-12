@@ -91,7 +91,58 @@ const elHint = document.getElementById('hint');
 function escapeHtml(s) {
   return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 }
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
+function highlightMatches(text, include) {
+  let out = escapeHtml(text);
+  for (const term of include) {
+    if (!term) continue;
+    const re = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+    out = out.replace(re, '<mark>$1</mark>');
+  }
+  return out;
+}
+
+async function copyVerseText(vref, selected) {
+  const parts = [`${vref}`];
+
+  for (const name of selected) {
+    const map = translations.get(name);
+    if (!map) continue;
+    const txt = map.get(vref);
+    if (!txt) continue;
+    parts.push(`${name}: ${txt}`);
+  }
+
+  const fullText = parts.join('\n\n');
+  await navigator.clipboard.writeText(fullText);
+}
+
+async function shareVerseText(vref, selected) {
+  const parts = [`${vref}`];
+
+  for (const name of selected) {
+    const map = translations.get(name);
+    if (!map) continue;
+    const txt = map.get(vref);
+    if (!txt) continue;
+    parts.push(`${name}: ${txt}`);
+  }
+
+  const fullText = parts.join('\n\n');
+
+  if (navigator.share) {
+    await navigator.share({
+      title: `Qur'an ${vref}`,
+      text: fullText
+    });
+  } else {
+    await navigator.clipboard.writeText(fullText);
+    alert('Sharing is not available here, so the verse was copied instead.');
+  }
+}
 function rebuildCheckboxes() {
   elChecks.innerHTML = "";
   const names = Array.from(translations.keys());
