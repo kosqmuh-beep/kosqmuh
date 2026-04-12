@@ -297,7 +297,7 @@ function renderVerseList(vrefs, selected) {
 if (!txt) continue;
 if (!matchesText(txt.toLowerCase(), include, exclude)) continue;
 
-const highlighted = highlightText(escapeHtml(txt), include);
+const highlighted = highlightText(escapeHtml(txt), ['children']);
 
 parts.push(`
   <div class="tblock">
