@@ -271,7 +271,7 @@ async function loadHostedTranslations() {
   const loaded = [];
   for (const [name, path] of translatorFiles) {
     try {
-      const res = await fetch(path, {cache: "no-store"});
+      const res = await fetch(path + "?v=" + Date.now());
       if (!res.ok) continue;
       const txt = await res.text();
       const map = parseLinesToMap(txt);
