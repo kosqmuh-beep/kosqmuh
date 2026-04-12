@@ -84,8 +84,22 @@ translatorFiles.forEach(([name, path]) => {
   fetch(path)
     .then(res => res.text())
     .then(text => {
-      translations.set(name, text);
-      document.getElementById("hint").innerText = "Loaded: " + Array.from(translations.keys()).join(", ");
+      const verses = text
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => {
+          const parts = line.split("|");
+          return {
+            surah: Number(parts[0]),
+            ayah: Number(parts[1]),
+            text: parts.slice(2).join("|").trim()
+          };
+        });
+
+      translations.set(name, verses);
+      document.getElementById("hint").innerText =
+        "Loaded: " + Array.from(translations.keys()).join(", ");
     });
 });
 const elChecks = document.getElementById('translatorChecks');
