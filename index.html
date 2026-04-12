@@ -80,7 +80,14 @@ const translatorFiles = [
 ];
 
 const preferredOrder = translatorFiles.map(x => x[0]);
-
+translatorFiles.forEach(([name, path]) => {
+  fetch(path)
+    .then(res => res.text())
+    .then(text => {
+      translations.set(name, text);
+      document.getElementById("hint").innerText = "Loaded: " + Array.from(translations.keys()).join(", ");
+    });
+});
 const elChecks = document.getElementById('translatorChecks');
 const elStatus = document.getElementById('loadStatus');
 const elResults = document.getElementById('results');
