@@ -342,7 +342,7 @@ function renderCriteria(include, exclude, selected) {
       const txt = map.get(vref);
       if (!txt) continue;
       if (!matchesText(txt.toLowerCase(), include, exclude)) continue;
-      parts.push(`<div class="tblock"><div class="tname">${escapeHtml(name)}:</div><div class="ttext">${escapeHtml(txt).replace(/children/gi, '<mark>$&</mark>')}</div></div>`);
+      parts.push(`<div class="tblock"><div class="tname">${escapeHtml(name)}:</div><div class="ttext">${highlightText(txt, include)}</div></div>`);
     }
     parts.push(`</div><hr/>`);
   }
