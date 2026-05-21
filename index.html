@@ -293,7 +293,7 @@ function renderVerseList(vrefs, selected) {
     for (const name of selected) {
       const map = translations.get(name);
       if (!map) continue;
-     const txt = map.get(vref);
+     const txt = map.get(vref) || map.get(vref.replace(':', '|'));
 if (!txt) continue;
 
 
