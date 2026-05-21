@@ -295,14 +295,14 @@ function renderVerseList(vrefs, selected) {
       if (!map) continue;
      const txt = map.get(vref);
 if (!txt) continue;
-if (!matchesText(txt.toLowerCase(), include, exclude)) continue;
+
 
 const highlighted = highlightText(txt, include);
 
 parts.push(`
   <div class="tblock">
     <div class="tname">${escapeHtml(name)}</div>
-    <div class="ttext">TEST-${highlighted}-TEST</div>
+  <div class="ttext">${escapeHtml(txt)}</div>
     <div class="actions">
       <button type="button" onclick="copyVerseText('${vref}', selectedTranslatorNames())">Copy</button>
       <button type="button" onclick="shareVerseText('${vref}', selectedTranslatorNames())">Share</button>
