@@ -370,7 +370,20 @@ async function loadHostedTranslations() {
     elStatus.innerHTML = `<span class="ok">Loaded:</span> ${msg}`;
   }
 }
+function goVerse(offset) {
+  const q = document.getElementById('q');
+  const raw = q.value.trim();
+  const match = raw.match(/^(\d{1,3}):(\d{1,3})$/);
+  if (!match) return;
 
+  const surah = Number(match[1]);
+  const ayah = Number(match[2]) + offset;
+
+  if (ayah < 1) return;
+
+  q.value = `${surah}:${ayah}`;
+  doSearch();
+}
 function doSearch() {
   const raw = document.getElementById('q').value.trim();
   const selected = selectedTranslatorNames();
@@ -384,9 +397,14 @@ function doSearch() {
     return;
   }
   if (/^\d{1,3}:\d{1,3}$/.test(raw)) {
-    elHint.textContent = `Verse view: ${raw}`;
-    renderVerseList([raw], selected);
-    return;
+    elHint.innerHTML = `
+  Verse view: ${raw}
+  <br>
+  <button type="button" onclick="goVerse(-1)">Previous</button>
+  <button type="button" onclick="goVerse(1)">Next</button>
+`;
+renderVerseList([raw], selected);
+return;
   }
   if (/^\d{1,3}$/.test(raw)) {
     const s = Number(raw);
