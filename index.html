@@ -333,6 +333,7 @@ function renderCriteria(include, exclude, selected) {
     return;
   }
   const parts = [];
+  parts.push(`<h2 style="color:red;">${vrefs.length} matching verses</h2>`);
   for (const vref of vrefs) {
     parts.push(`<div class="verse">`);
     const corpusUrl = `https://corpus.quran.com/translation.jsp?chapter=${vref.split(':')[0]}&verse=${vref.split(':')[1]}`;
